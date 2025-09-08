@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
+import MonthlyPerformanceChart from './components/MonthlyPerformanceChart';
+
 
 // Dynamically import the Map component to avoid SSR issues with Leaflet
 const FactoryMap = dynamic(() => import('./components/FactoryMap'), {
@@ -139,13 +141,23 @@ export default function Home() {
           <FactoryMap factories={factories} />
         )}
       </div>
-
+ {/* Monthly Performance Chart Section */}
+      <section className="bg-gray-50 p-6 rounded-xl shadow-inner">
+        {loading ? (
+          <div className="h-96 bg-gray-100 animate-pulse rounded-lg flex items-center justify-center">Loading chart...</div>
+        ) : error ? (
+          <div className="text-center text-red-500">{error}</div>
+        ) : (
+          <MonthlyPerformanceChart factories={factories} />
+        )}
+      </section>
       {/* Footer */}
       <footer className="bg-gray-800 text-white text-center py-4 px-4">
         <p className="text-sm sm:text-base">
-          Copyright 2025 Amana Industries
+          Copyright 2025 Amana Industries 
         </p>
       </footer>
     </div>
   );
+  
 }
