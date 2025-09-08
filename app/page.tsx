@@ -3,57 +3,26 @@
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import MonthlyPerformanceChart from './components/MonthlyPerformanceChart';
-import {
+
+import{
   Factory,
   FactoryWithChartData,
   hasChartData,
-} from './types';
-
+ 
+} from'./types';
 // Dynamically import the Map component to avoid SSR issues with Leaflet
 const FactoryMap = dynamic(() => import('./components/FactoryMap'), {
   ssr: false,
   loading: () => <div className="h-96 bg-gray-100 animate-pulse rounded-lg flex items-center justify-center">Loading map...</div>
 });
 
-interface Factory {
-  id: number;
-  name: string;
-  location: {
-    city: string;
-    country: string;
-    latitude: number;
-    longitude: number;
-    address: string;
-  };
-  status: string;
-  established: string;
-  employees: number;
-  specialization: string[];
-  production_capacity_monthly: number;
-  production_level_2024?: Array<{
-    month: string;
-    value: number;
-  }>;
-  inventory_level_2024?: Array<{
-    month: string;
-    value: number;
-  }>;
-  contact: {
-    manager: string;
-    phone: string;
-    email: string;
-  };
-}
+
 // Re-using the MonthlyPerformanceChart's interface for our type guard
 interface FactoryData {
   production_level_2024: Array<{ month: string; value: number }>;
   inventory_level_2024: Array<{ month: string; value: number }>;
 }
 
-// This function is a type guard that explicitly checks for the required data
-function hasChartData(f: Factory): f is FactoryData {
-  return f.production_level_2024 !== undefined && f.inventory_level_2024 !== undefined;
-}
 
 interface ApiResponse {
   message: string;
